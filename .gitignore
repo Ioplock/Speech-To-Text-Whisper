@@ -1,0 +1,5 @@
+transcriptions/*.txt
+videos/*.mp4
+__pycache__/
+.venv/
+*.pyc
