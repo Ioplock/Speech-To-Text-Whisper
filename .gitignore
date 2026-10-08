@@ -3,3 +3,6 @@ videos/*.mp4
 __pycache__/
 .venv/
 *.pyc
+dist/
+build/
+*.egg-info/

@@ -1,0 +1,46 @@
+[project]
+name = "multifunction-tool"
+version = "1.1.0"
+description = "Audio transcription (Whisper), audio extraction, token counting + local API server"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "multifunction-tool" }]
+keywords = ["whisper", "speech-to-text", "transcription", "fastapi", "tiktoken"]
+
+# Light base: server + tokens work without heavy ML deps.
+# Heavy stuff (torch/whisper, moviepy/ffmpeg) is optional -> laptop-safe `uv sync`.
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "python-multipart>=0.0.9",
+  "tiktoken>=0.7",
+  "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+whisper = ["openai-whisper>=20240930"]
+video = ["moviepy>=2.0", "imageio-ffmpeg>=0.5"]
+all = ["openai-whisper>=20240930", "moviepy>=2.0", "imageio-ffmpeg>=0.5"]
+
+[project.scripts]
+transcript = "multifunction_tool.cli:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8",
+  "httpx>=0.27",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# src-layout auto-discovery: src/multifunction_tool (+ src/program.py shim for
+# backwards-compatible `PYTHONPATH=src import program`).
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.uv]
+package = true
